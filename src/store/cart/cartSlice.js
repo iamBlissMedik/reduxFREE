@@ -28,17 +28,30 @@ const cartSlice = createSlice({
         });
         // state.totalQuantity++;
       }
+
       state.totalQuantity = state.itemsList.reduce(
         (ack, item) => ack + item.quantity,
         0
       );
-          
     },
-    removeFromCart: () => {},
+    removeFromCart: (state, action) => {
+      const id = action.payload;
+      const existingItem = state.itemsList.find((item) => item.id === id);
+      if (existingItem.quantity === 1) {
+        state.itemsList = state.itemsList.filter((item) => item.id !== id);
+      } else {
+        existingItem.quantity--;
+        existingItem.totalPrice -= existingItem.price;
+      }
+      state.totalQuantity = state.itemsList.reduce(
+        (ack, item) => ack + item.quantity,
+        0
+      );
+    },
     setShowCart: (state) => {
-      state.showCart = true;
+      state.showCart = !state.showCart;
     },
   },
 });
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, setShowCart, removeFromCart } = cartSlice.actions;
 export default cartSlice.reducer;

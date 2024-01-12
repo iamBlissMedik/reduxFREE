@@ -15,6 +15,7 @@ const CartItems = () => {
             total={item.totalPrice}
             name={item.name}
             key={item.id}
+            quantity={item.quantity}
           />
         ))}
       </div>
